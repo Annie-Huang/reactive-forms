@@ -87,3 +87,41 @@ FormBuilder:
       postalCode: ['']
     })
   });
+
+----------
+
+Single Validation | Multiple Validation
+
+    ---------
+
+    group(controlsConfig:
+    {[key: string]: any;}, options?: AbstractControlOptions
+    |
+    {[key: string]: any;} | null): FormGroup;
+
+     * 1) `AbstractControlOptions` object (preferred), which consists of:
+     * * `validators`: A synchronous validator function, or an array of validator functions
+     * * `asyncValidators`: A single async validator or array of async validator functions
+     * * `updateOn`: The event upon which the control should be updated (options: 'change' | 'blur' |
+     * submit')
+
+     ---------
+
+  registrationForm = this.fb.group({
+    userName: ['', Validators.required],
+    ...
+  });
+
+  is-invalid and d-none are bootstrap class:
+  <input
+    [class.is-invalid]="registrationForm.get('userName').invalid && registrationForm.get('userName').touched"
+    formControlName="userName"
+    type="text"
+    class="form-control"
+  >
+  <small
+    [class.d-none]="registrationForm.get('userName').valid || registrationForm.get('userName').untouched"
+    class="text-danger"
+  >
+    Username is required
+  </small>
