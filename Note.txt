@@ -52,6 +52,7 @@ FormGroup | Nested FromGroup | FormControl:
   });
 
 ----------
+
 setValue({...}) | patchValue({...})
 setValue: Need to set every field in the form
 patchValue: Need to set some fields in the form
@@ -70,4 +71,19 @@ patchValue: Need to set some fields in the form
     userName: 'Bruce',
     password: 'test',
     confirmPassword: 'test'
+  });
+
+----------
+
+FormBuilder:
+
+  registrationForm = this.fb.group({
+    userName: ['Vishwas'],
+    password: [''],
+    confirmPassword: [''],
+    address: this.fb.group({
+      city: [''],
+      state: [''],
+      postalCode: ['']
+    })
   });
