@@ -24,11 +24,19 @@ C:\react\reactive-forms\server>npm run start
 C:\react\reactive-forms>npm run start
 
 
+===================
+
+FormGroup | Nested FromGroup | FormControl:
 
   <form [formGroup]="registrationForm">
       <input formControlName="userName" type="text" class="form-control">
       <input formControlName="password" type="password" class="form-control">
       <input formControlName="confirmPassword" type="password" class="form-control">
+      <div formGroupName="address">
+          <input formControlName="city" type="text" class="form-control">
+          <input formControlName="state" type="text" class="form-control">
+          <input formControlName="postalCode" type="text" class="form-control">
+      </div>
   </from>
     {{registrationForm.value | json}}
 
@@ -36,4 +44,9 @@ C:\react\reactive-forms>npm run start
     userName: new FormControl(''),
     password: new FormControl(''),
     confirmPassword: new FormControl(''),
+    address: new FormGroup({
+      city: new FormControl(''),
+      state: new FormControl(''),
+      postalCode: new FormControl('')
+    })
   });

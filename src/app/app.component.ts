@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
@@ -11,5 +11,10 @@ export class AppComponent {
     userName: new FormControl('Vishwas'),
     password: new FormControl(''),
     confirmPassword: new FormControl(''),
+    address: new FormGroup({
+      city: new FormControl(''),
+      state: new FormControl(''),
+      postalCode: new FormControl('')
+    })
   });
 }
