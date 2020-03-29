@@ -13,6 +13,8 @@ C:\react>ng new reactive-forms
 ? Would you like to add Angular routing? Yes
 ? Which stylesheet format would you like to use? CSS
 
+Express server:
 C:\react\reactive-forms\server>npm init -y
 C:\react\reactive-forms\server>npm install express body-parser cors
+C:\react\reactive-forms\server>npm run start
 
