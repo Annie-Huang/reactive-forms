@@ -1,0 +1,134 @@
+FormGroup | Nested FromGroup | FormControl:
+setValue({...}) | patchValue({...})
+FormBuilder:
+Single Validation | Multiple Validation on the same field
+
+
+
+
+
+FormGroup | Nested FromGroup | FormControl:
+
+  <form [formGroup]="registrationForm">
+      <input formControlName="userName" type="text" class="form-control">
+      <input formControlName="password" type="password" class="form-control">
+      <input formControlName="confirmPassword" type="password" class="form-control">
+      <div formGroupName="address">
+          <input formControlName="city" type="text" class="form-control">
+          <input formControlName="state" type="text" class="form-control">
+          <input formControlName="postalCode" type="text" class="form-control">
+      </div>
+  </from>
+    {{registrationForm.value | json}}
+
+  registrationForm = new FormGroup({
+    userName: new FormControl(''),
+    password: new FormControl(''),
+    confirmPassword: new FormControl(''),
+    address: new FormGroup({
+      city: new FormControl(''),
+      state: new FormControl(''),
+      postalCode: new FormControl('')
+    })
+  });
+
+----------
+
+setValue({...}) | patchValue({...})
+setValue: Need to set every field in the form
+patchValue: Need to set some fields in the form
+
+  this.registrationForm.setValue({
+    userName: 'Bruce',
+    password: 'test',
+    confirmPassword: 'test',
+    address: {
+      city: 'City',
+      state: 'State',
+      postalCode: '123456'
+    }
+  });
+  this.registrationForm.patchValue({
+    userName: 'Bruce',
+    password: 'test',
+    confirmPassword: 'test'
+  });
+
+----------
+
+FormBuilder:
+
+  registrationForm = this.fb.group({
+    userName: ['Vishwas'],
+    password: [''],
+    confirmPassword: [''],
+    address: this.fb.group({
+      city: [''],
+      state: [''],
+      postalCode: ['']
+    })
+  });
+
+----------
+
+Single Validation | Multiple Validation on the same field
+
+    ---------
+
+    group(controlsConfig:
+    {[key: string]: any;}, options?: AbstractControlOptions
+    |
+    {[key: string]: any;} | null): FormGroup;
+
+     * 1) `AbstractControlOptions` object (preferred), which consists of:
+     * * `validators`: A synchronous validator function, or an array of validator functions
+     * * `asyncValidators`: A single async validator or array of async validator functions
+     * * `updateOn`: The event upon which the control should be updated (options: 'change' | 'blur' |
+     * submit')
+
+     ---------
+
+  registrationForm = this.fb.group({
+    userName: ['', Validators.required],                              <<< Single
+    ...
+  });
+  get userName() {
+    return this.registrationForm.get('userName');
+  }
+
+  is-invalid and d-none are bootstrap class:
+  <input
+    [class.is-invalid]="userName.invalid && userName.touched"
+    formControlName="userName"
+    type="text"
+    class="form-control"
+  >
+  <small
+    [class.d-none]="userName.valid || userName.untouched"
+    class="text-danger"
+  >
+    Username is required
+  </small>
+
+
+
+
+  registrationForm = this.fb.group({
+    userName: ['', [Validators.required, Validators.minLength(3)]],     <<< Multiple
+    ...
+  });
+  get userName() {
+    return this.registrationForm.get('userName');
+  }
+
+  <input
+    [class.is-invalid]="userName.invalid && userName.touched"
+    formControlName="userName"
+    type="text"
+    class="form-control"
+  >
+  <div *ngIf="userName.invalid && userName.touched">
+    <small *ngIf="userName.errors?.required" class="text-danger">Username is required</small>
+    <small *ngIf="userName.errors?.minlength" class="text-danger">Username must be at least 3 characters</small>
+  </div>
+
