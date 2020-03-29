@@ -20,3 +20,5 @@ C:\react\reactive-forms\server>npm init -y
 C:\react\reactive-forms\server>npm install express body-parser cors
 C:\react\reactive-forms\server>npm run start
 
+
+C:\react\reactive-forms>npm run start
