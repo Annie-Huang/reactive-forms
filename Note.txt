@@ -8,6 +8,8 @@ https://github.com/Annie-Huang/reactive-forms
 
 https://www.bootstrapcdn.com/
 
+Up to Angular Forms Tutorial - 22 - Simple Validation
+
 =============================================================
 
 
@@ -90,7 +92,7 @@ FormBuilder:
 
 ----------
 
-Single Validation | Multiple Validation
+Single Validation | Multiple Validation on the same field
 
     ---------
 
@@ -108,20 +110,51 @@ Single Validation | Multiple Validation
      ---------
 
   registrationForm = this.fb.group({
-    userName: ['', Validators.required],
+    userName: ['', Validators.required],                              <<< Single
     ...
   });
+  get userName() {
+    return this.registrationForm.get('userName');
+  }
 
   is-invalid and d-none are bootstrap class:
   <input
-    [class.is-invalid]="registrationForm.get('userName').invalid && registrationForm.get('userName').touched"
+    [class.is-invalid]="userName.invalid && userName.touched"
     formControlName="userName"
     type="text"
     class="form-control"
   >
   <small
-    [class.d-none]="registrationForm.get('userName').valid || registrationForm.get('userName').untouched"
+    [class.d-none]="userName.valid || userName.untouched"
     class="text-danger"
   >
     Username is required
   </small>
+
+
+
+
+  registrationForm = this.fb.group({
+    userName: ['', [Validators.required, Validators.minLength(3)]],     <<< Multiple
+    ...
+  });
+  get userName() {
+    return this.registrationForm.get('userName');
+  }
+
+  <input
+    [class.is-invalid]="userName.invalid && userName.touched"
+    formControlName="userName"
+    type="text"
+    class="form-control"
+  >
+  <div *ngIf="userName.invalid && userName.touched">
+    <small *ngIf="userName.errors?.required" class="text-danger">Username is required</small>
+    <small *ngIf="userName.errors?.minlength" class="text-danger">Username must be at least 3 characters</small>
+  </div>
+
+
+
+
+
+
