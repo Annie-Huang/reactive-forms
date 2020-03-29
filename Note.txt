@@ -50,3 +50,24 @@ FormGroup | Nested FromGroup | FormControl:
       postalCode: new FormControl('')
     })
   });
+
+----------
+setValue({...}) | patchValue({...})
+setValue: Need to set every field in the form
+patchValue: Need to set some fields in the form
+
+  this.registrationForm.setValue({
+    userName: 'Bruce',
+    password: 'test',
+    confirmPassword: 'test',
+    address: {
+      city: 'City',
+      state: 'State',
+      postalCode: '123456'
+    }
+  });
+  this.registrationForm.patchValue({
+    userName: 'Bruce',
+    password: 'test',
+    confirmPassword: 'test'
+  });
