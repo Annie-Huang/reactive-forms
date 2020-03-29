@@ -22,3 +22,18 @@ C:\react\reactive-forms\server>npm run start
 
 
 C:\react\reactive-forms>npm run start
+
+
+
+  <form [formGroup]="registrationForm">
+      <input formControlName="userName" type="text" class="form-control">
+      <input formControlName="password" type="password" class="form-control">
+      <input formControlName="confirmPassword" type="password" class="form-control">
+  </from>
+    {{registrationForm.value | json}}
+
+  registrationForm = new FormGroup({
+    userName: new FormControl(''),
+    password: new FormControl(''),
+    confirmPassword: new FormControl(''),
+  });
