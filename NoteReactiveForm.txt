@@ -1,7 +1,7 @@
 FormGroup | Nested FromGroup | FormControl:
 setValue({...}) | patchValue({...})
 FormBuilder:
-Single Validation | Multiple Validation on the same field
+Single Validation | Multiple Validation on the same field | custom validation
 
 
 
@@ -32,7 +32,7 @@ FormGroup | Nested FromGroup | FormControl:
     })
   });
 
-----------
+=============================================================================================
 
 setValue({...}) | patchValue({...})
 setValue: Need to set every field in the form
@@ -54,7 +54,7 @@ patchValue: Need to set some fields in the form
     confirmPassword: 'test'
   });
 
-----------
+=============================================================================================
 
 FormBuilder:
 
@@ -69,7 +69,7 @@ FormBuilder:
     })
   });
 
-----------
+=============================================================================================
 
 Single Validation | Multiple Validation on the same field
 
@@ -121,6 +121,11 @@ Single Validation | Multiple Validation on the same field
     return this.registrationForm.get('userName');
   }
 
+  export function forbiddenNameValidator(control: AbstractControl): {[key: string]: any} | null {
+    const forbidden = /admin/.test(control.value);
+    return forbidden ? {'forbiddenName': {value: control.value}} : null;
+  }
+
   <input
     [class.is-invalid]="userName.invalid && userName.touched"
     formControlName="userName"
@@ -130,5 +135,49 @@ Single Validation | Multiple Validation on the same field
   <div *ngIf="userName.invalid && userName.touched">
     <small *ngIf="userName.errors?.required" class="text-danger">Username is required</small>
     <small *ngIf="userName.errors?.minlength" class="text-danger">Username must be at least 3 characters</small>
+    <small *ngIf="userName.errors?.forbiddenName" class="text-danger">{{userName.errors?.forbiddenName.value}} Username not allowed</small>
   </div>
+
+
+=============================================================================================
+
+custom validation with | without parameter.
+
+  registrationForm = this.fb.group({
+    userName: ['', [Validators.required, Validators.minLength(3), forbiddenNameValidator]],       <<< custom validator, no parameter
+    ...
+  });
+
+  export function forbiddenNameValidator(control: AbstractControl): {[key: string]: any} | null {
+    // if the control has the value of 'admin', forbidden will be set to true.
+    const forbidden = /admin/.test(control.value);
+    return forbidden ? {'forbiddenName': {value: control.value}} : null;
+  }
+
+  <input
+    [class.is-invalid]="userName.invalid && userName.touched"
+    formControlName="userName"
+    type="text"
+    class="form-control"
+  >
+  <div *ngIf="userName.invalid && userName.touched">
+    ...
+    <small *ngIf="userName.errors?.forbiddenName" class="text-danger">{{userName.errors?.forbiddenName.value}} Username not allowed</small>
+  </div>
+
+  -------------
+
+  Or:
+
+  registrationForm = this.fb.group({
+    userName: ['', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/password/)]],   <<< custom validator, can pass in parameter
+  });
+
+  export function forbiddenNameValidator(forbiddenName: RegExp): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const forbidden = forbiddenName.test(control.value);
+      return forbidden ? {'forbiddenName': {value: control.value}} : null;
+    };
+  }
+
 
