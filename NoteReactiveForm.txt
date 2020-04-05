@@ -1,9 +1,9 @@
 FormGroup | Nested FromGroup | FormControl:
 setValue({...}) | patchValue({...})
 FormBuilder:
-Single Validation | Multiple Validation on the same field | custom validation
-
-
+Single Validation | Multiple Validation on the same field
+custom validation with | without parameter.
+cross field validation
 
 
 
@@ -179,5 +179,38 @@ custom validation with | without parameter.
       return forbidden ? {'forbiddenName': {value: control.value}} : null;
     };
   }
+
+=============================================================================================
+
+cross field validation:
+
+  registrationForm = this.fb.group({
+    password: [''],
+    confirmPassword: [''],
+  }, {validator: PasswordValidator});               <<< form level validator for cross field validation
+
+  export function PasswordValidator(control: AbstractControl): {[key: string]: any} | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+    if (password.pristine || confirmPassword.pristine) {
+      return null;
+    }
+    return password && confirmPassword && password.value !== confirmPassword.value ? {'misMatch': true} : null;
+  }
+
+  <form [formGroup]="registrationForm">
+    <div class="form-group">
+      <label>Password</label>
+      <input formControlName="password" type="password" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input [class.is-invalid]="registrationForm.errors?.misMatch" formControlName="confirmPassword" type="password" class="form-control">
+      <small *ngIf="registrationForm.errors?.misMatch" class="text-danger">Passwords do not match</small>                         <<< form level.
+    </div>
+  </form>
+
+
 
 

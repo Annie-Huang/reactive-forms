@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {forbiddenNameValidator} from './shared/user-name-validator';
+import {PasswordValidator} from './shared/password.validator';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +38,7 @@ export class AppComponent {
     })
   });*/
 
+/*
   // userName: ['', Validators.required],
   // userName: ['', [Validators.required, Validators.minLength(3), forbiddenNameValidator]],
   registrationForm = this.fb.group({
@@ -48,7 +50,18 @@ export class AppComponent {
       state: [''],
       postalCode: ['']
     })
-  });
+  });*/
+
+  registrationForm = this.fb.group({
+    userName: ['', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/password/)]],
+    password: [''],
+    confirmPassword: [''],
+    address: this.fb.group({
+      city: [''],
+      state: [''],
+      postalCode: ['']
+    })
+  }, {validator: PasswordValidator});
 
   loadApiData() {
     // this.registrationForm.setValue({
