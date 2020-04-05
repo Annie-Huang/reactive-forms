@@ -28,7 +28,17 @@ http://localhost:4200/
 
 Another terminal:
 C:\react\reactive-forms\server>node server
-http://localhost:3000/
+Server running on localhost:3000
+{
+  userName: 'annie',
+  email: 'annie.huang@abc.com',
+  subscribe: true,
+  password: 'xxx',
+  confirmPassword: 'xxx',
+  address: { city: 'Melbourne', state: 'Victoria', postalCode: '3000' },
+  alternateEmails: [ 'annie.huang@xxx.com', 'annie.huang@yyy.com' ]
+}
+
 
 
 C:\react\reactive-forms>ng generate service registration

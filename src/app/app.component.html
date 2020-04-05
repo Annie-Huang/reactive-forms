@@ -2,7 +2,7 @@
 
 <div class="container-fluid">
   <h2>Registration Form</h2>
-  <form [formGroup]="registrationForm">
+  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     {{registrationForm.value | json}}
 
     <div class="form-group">
@@ -77,7 +77,7 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button [disabled]="!registrationForm.valid" type="submit" class="btn btn-primary">Register</button>
     <button (click)="loadApiData()" class="btn btn-secondary ml-2" type="button">Load API Data</button>
   </form>
 </div>
