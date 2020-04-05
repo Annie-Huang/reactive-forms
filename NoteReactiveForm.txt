@@ -5,7 +5,7 @@ Single Validation | Multiple Validation on the same field
 custom validation with | without parameter.
 cross field validation
 conditional validation (watch for when condition is satisfied)
-
+dynamic form control (add|remove) | FormArray
 
 FormGroup | Nested FromGroup | FormControl:
 
@@ -248,4 +248,34 @@ conditional validation (watch for when condition is satisfied):
     <label class="form-check-label">
       Send me promotional offers
     </label>
+  </div>
+
+=============================================================================================
+
+dynamic form control (add|remove) | FormArray
+- FormArray is to use to maintain a dynamic list of control
+
+  this.registrationForm = this.fb.group({
+    alternateEmails: this.fb.array([])
+  }, ...);
+
+  get alternateEmails() {
+    // return <FormArray>this.registrationForm.get('alternateEmails');    <<< Need to cast Form Array, Method 1
+    return this.registrationForm.get('alternateEmails') as FormArray;     <<< Need to cast Form Array, Method 2
+  }
+  addAlternateEmail() {
+    this.alternateEmails.push(this.fb.control(''));
+  }
+  removeAlternateEmail(index: number) {
+    this.alternateEmails.removeAt(index);
+  }
+
+  <div class="form-group">
+    <label>Email</label>
+    <button type="button" class="btn btn-secondary btn-sm m-2" (click)="addAlternateEmail()">Add e-mail</button>
+    ...
+    <div formArrayName="alternateEmails" *ngFor="let email of alternateEmails.controls; let i=index">
+      <button type="button" class="btn btn-secondary btn-sm m-2" (click)="removeAlternateEmail(i)">Remove this e-mail</button>
+      <input type="text" class="form-control my-1" [formControlName]="i">
+    </div>
   </div>

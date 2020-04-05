@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {forbiddenNameValidator} from './shared/user-name-validator';
 import {PasswordValidator} from './shared/password.validator';
 
@@ -16,6 +16,17 @@ export class AppComponent implements OnInit {
   }
   get email() {
     return this.registrationForm.get('email');
+  }
+  get alternateEmails() {
+    // return <FormArray>this.registrationForm.get('alternateEmails');
+    return this.registrationForm.get('alternateEmails') as FormArray;
+  }
+
+  addAlternateEmail() {
+    this.alternateEmails.push(this.fb.control(''));
+  }
+  removeAlternateEmail(index: number) {
+    this.alternateEmails.removeAt(index);
   }
 
   constructor(private fb: FormBuilder) {
@@ -71,7 +82,7 @@ export class AppComponent implements OnInit {
   }, {validator: PasswordValidator});*/
 
 
-  // Put the whole registrationForm into ngOnInit is to do the get('subscribe') part.
+  // Put the whole registrationForm into ngOnInit so we can do a registrationForm.get('subscribe').valueChanges.subscribe.
   ngOnInit(): void {
     this.registrationForm = this.fb.group({
       userName: ['', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/password/)]],
@@ -83,7 +94,8 @@ export class AppComponent implements OnInit {
         city: [''],
         state: [''],
         postalCode: ['']
-      })
+      }),
+      alternateEmails: this.fb.array([])
     }, {validator: PasswordValidator});
 
     this.registrationForm.get('subscribe').valueChanges
